@@ -1,0 +1,54 @@
+plugins {
+    id 'groovy'
+    id 'java-gradle-plugin' // Java Gradle Plugin
+    id 'maven-publish'
+}
+
+group = 'org.weinian.plugin'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    maven { url 'https://maven.aliyun.com/repository/public' }
+    maven { url "https://repo.spring.io/release" }
+    mavenCentral()
+}
+
+dependencies {
+    implementation gradleApi();
+    implementation localGroovy()
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+gradlePlugin {
+    plugins {
+        greetingsPlugin {
+            id = 'check-dependencies'
+            displayName = 'check-dependencies'
+            description = '检查依赖是否有快照插件'
+            implementationClass = 'org.weinian.plugin.CheckPlugin'
+        }
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            // 使用 宽松协议
+            allowInsecureProtocol = true
+            if (project.version.endsWith('-SNAPSHOT')) {
+                url = "xxxx"
+            } else {
+                url = "xxxxx"
+            }
+//            credentials {
+//                username ''
+//                password ''
+//            }
+        }
+    }
+}
